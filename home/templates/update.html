@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %} 
+<div class="border p-3 shadow">
+    {% if todo.add_by == request.user %}
+        <form method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="update">
+        </form>
+    {% else %}
+        <p>error</p>
+    {% endif %}
+   
+</div>
+{% endblock %}

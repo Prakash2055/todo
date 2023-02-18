@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a href="#" class="navbar-brand">TO<b>DO</b></a>  		
+	<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<!-- Collection of nav links, forms, and other content for toggling -->
+	<div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+		<div class="navbar-nav">
+			<a href="" class="nav-item nav-link">Home</a>
+			<a href="#" class="nav-item nav-link">About</a>
+		</div>
+		
+		<div class="navbar-nav ml-auto action-buttons">
+			{% if user.is_authenticated %}
+				<div class="nav-item dropdown">
+					{% comment %} <a href="{% url 'Logout' %}" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn">Login</a> {% endcomment %}
+				</div>
+			{% endif %}
+			<div class="dropdown">
+				<button><i class="fas fa-user"> &nbsp{{user}}</i></button>
+				<div class="dropdown-options">
+				  <a href="#">Dashboard</a>
+				  <a href="#">Setting</a>
+				  <a href="{% url 'logout' %}">Logout</a>
+				</div>
+			  </div>
+			{% comment %} <div class="nav-item dropdown">
+				<a href="{% url 'logout' %}" class="btn btn-primary dropdown-toggle sign-up-btn">Logout</a>
+			</div>	 {% endcomment %}
+			
+        </div>
+	</div>
+</nav>
+
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            <strong>Login!</strong> successful
+        </div>
+</div>
+    {% endfor %}
+  {% endif %}
+
+

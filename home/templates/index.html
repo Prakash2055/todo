@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Todo|Home{% endblock %}
+
+{% block content %} 
+{% comment %} profile icon html {% endcomment %}
+<div class="border p-3 shadow">
+    <form action="" style="border:1px solid #ccc" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit" class="btn btn-success btn-block" value="submit">Add Task</button>
+    </form>
+    <hr>  
+    {% for todos in todo %}
+    
+        <div class="border bg-muted p-3 mb-3">
+            <p> <small>{{ todos.date_created }}</small></p>
+            <div class="row">
+                <div class="col-md-8">
+                    {% if todos.complete == True %}
+                    <strike> <p> {{ todos.content }}</p></strike>
+                    {% else %}
+                        <p>{{ todos.content }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-info btn-sm mx-1" href="{% url 'update' todos.id %}">Edit</a>
+                    <a class="btn btn-danger btn-sm mx-1" href="{% url 'delete' todos.id %}">Delete</a>
+                </div>
+            </div>
+        </div>
+        
+    {% endfor %}
+
+</div>
+
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+        {% if todo.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ todo.previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+          </li>
+        {% endif %}
+
+        {% if todo.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ todo.number|add:'-5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in todo.paginator.page_range %}
+            {% if todo.number == i %}
+                <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+            {% elif i > todo.number|add:'-5' and i < todo.number|add:'5' %}
+                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if todo.paginator.num_pages > todo.number|add:'4' %}
+           <li class="page-item"><a class="page-link" href="?page={{ todo.number|add:'5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if todo.has_next %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ todo.next_page_number }}">Next</a>
+          </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <!--end of Pagination-->
+
+{% endblock %}
